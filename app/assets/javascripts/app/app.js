@@ -11,6 +11,6 @@ angular
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyDoHFpligHoNQ_2WZudFcGJqBVbWBWFqns',
         v: '3.exp',
-        libraries: 'weather, geometry, visualization, places'
+        libraries: 'geometry, visualization, places'
     });
   });
