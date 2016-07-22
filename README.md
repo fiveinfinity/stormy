@@ -1,24 +1,10 @@
-# README
+# WELCOME TO STORMY
+# GET THE BAD WEATHER BEFORE IT GETS YOU (TM, @smulligan85)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# gather weather forecasts when you'll be driving through predetermined waypoints on your trip.
 
-Things you may want to cover:
+Currently running: ruby 2.2.3p173 (2015-08-18 revision 51636)
+Currently not using any database yet. Default sqlite3
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+HELPFUL DOCS:
+https://developers.google.com/maps/documentation/javascript/directions
