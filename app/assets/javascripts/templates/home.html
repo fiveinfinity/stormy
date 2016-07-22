@@ -1,3 +1,18 @@
-here we are in home
+Welcome to Stormy
 
-{{"hello" + " joe"}}
+<!-- LOADING BAR HERE. NEEEDS BOWER AND REQUIRE IN PIPELINE -->
+<!-- <link rel='stylesheet' href='build/loading-bar.min.css' type='text/css' media='all' />
+<script type='text/javascript' src='build/loading-bar.min.js'></script> -->
+
+
+<!-- LOG IN TO SAVE TRIPS?? -->
+
+
+<form name="form" ng-submit="home.directions()">
+  <input type="text" name="origin" ng-model="home.origin" placeholder="origin"/>
+  <input type="text" name="destination" ng-model="home.destination" placeholder="destination"/>
+  <input type="submit" name="submit" value="Get Your Stormy On">
+</form>
+
+<ui-gmap-google-map center='map.center' zoom='map.zoom' control='map.control'>
+</ui-gmap-google-map>

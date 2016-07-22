@@ -11,6 +11,8 @@
 // about supported directives.
 //
 //= require angular
+//= require angular-google-maps
+//= require angular-simple-logger
 //= require angular-ui-router
 //= require angular-rails-templates
 //= require jquery

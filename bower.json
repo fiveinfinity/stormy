@@ -3,7 +3,8 @@
     "name": "bower-rails generated lib assets",
     "dependencies": {
       "angular": "v1.5.3",
-      "angular-ui-router": "latest"
+      "angular-ui-router": "latest",
+      "angular-google-maps": "latest"
     }
   },
   "vendor": {
