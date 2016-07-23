@@ -1,4 +1,13 @@
-<img src="assets/stormy.png" alt="How's the weather over there?" style="height: 50px; width: auto">
+<div id="mySidenav" class="sidenav" style="top:150px">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <form name="form" ng-submit="home.directions()" >
+    <input type="text" name="origin" ng-model="home.origin" placeholder="origin"/>
+    <input type="text" name="destination" ng-model="home.destination" placeholder="destination"/>
+    <input type="submit" name="submit" value="Get Your Stormy On">
+  </form>
+</div>
+
+<img class="logo" src="assets/stormy.png" alt="How's the weather over there?" onclick="openNav()">
 
 <!-- LOADING BAR HERE. NEEDS BOWER AND REQUIRE IN PIPELINE -->
 <!-- <link rel='stylesheet' href='build/loading-bar.min.css' type='text/css' media='all' />
@@ -8,11 +17,7 @@
 <!-- LOG IN TO SAVE TRIPS?? -->
 
 
-<form name="form" ng-submit="home.directions()">
-  <input type="text" name="origin" ng-model="home.origin" placeholder="origin"/>
-  <input type="text" name="destination" ng-model="home.destination" placeholder="destination"/>
-  <input type="submit" name="submit" value="Get Your Stormy On">
-</form>
+
 
 <ui-gmap-google-map center='map.center' zoom='map.zoom' control='map.control'>
 </ui-gmap-google-map>
