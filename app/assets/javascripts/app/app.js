@@ -1,5 +1,5 @@
 angular
-  .module('app', ['ui.router', 'templates', 'uiGmapgoogle-maps'])
+  .module('app', ['ui.router', 'templates', 'uiGmapgoogle-maps', 'ui.bootstrap'])
   .config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
     $stateProvider
       .state('home', {
