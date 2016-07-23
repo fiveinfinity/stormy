@@ -8,7 +8,7 @@
 function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService) {
   var ctrl = this;
   //sets $scope map parameters and creates an instance of Google Maps (you use this to instantiate services).
-  $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8, control: {} };
+  $scope.map = { center: { latitude: 37, longitude: -122 }, zoom: 8, control: {} };
   uiGmapGoogleMapApi.then(function(maps) {
     ctrl.maps = maps;
   });
