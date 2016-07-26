@@ -18,3 +18,6 @@ http://www.w3schools.com/howto/howto_js_sidenav.asp
 
 SHOW TURN-BY-TURN ROUTE (TEXT):
 https://developers.google.com/maps/documentation/javascript/examples/directions-panel
+
+UTC TIME ZONES:
+https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations

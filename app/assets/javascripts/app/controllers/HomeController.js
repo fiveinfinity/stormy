@@ -4,11 +4,12 @@
 *  $scope.map holds parameters regarding how you want your map to display on your page.
 */
 
-
-function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService) {
+function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService, week, TimeService) {
   var ctrl = this;
-  //sets $scope map parameters and creates an instance of Google Maps (you use this to instantiate services).
-  $scope.map = { center: { latitude: 37, longitude: -122 }, zoom: 8, control: {} };
+  ctrl.week = week;
+  ctrl.hours = [1,2,3,4,5,6,7,8,9,10,11,12];
+  ctrl.timePeriod = ['AM', 'PM']
+  $scope.map = { center: { latitude: 37.09024, longitude: -95.712891 }, zoom: 4, control: {} };
   uiGmapGoogleMapApi.then(function(maps) {
     ctrl.maps = maps;
   });
@@ -24,12 +25,16 @@ function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService) 
   }
 
   ctrl.createDirections = function(directionsService, maps) {
-    directionsService.route(MapsService.directionParams(ctrl.origin, ctrl.destination, maps),
+    hour = TimeService.militaryTime(ctrl.hour, ctrl.period);
+    //need to return the day and match against ctrl.week object
+    dayInt = TimeService.getDayInt(ctrl.day)
+    date = TimeService.dateParser(ctrl.week[dayInt][1]);
+    directionsService.route(MapsService.directionParams(ctrl.origin, ctrl.destination, maps, date, hour),
     function(response, status) {
       if (status == maps.DirectionsStatus.OK) {
         //sets directions, creates markers on the maps object via MapsService
         ctrl.directionsDisplay.setDirections(response);
-        ctrl.weatherPoint = MapsService.createMarkers(response, maps, ctrl.map)
+        ctrl.weatherPoint = MapsService.createMarkers(response, maps, ctrl.map);
       }
     });
   }

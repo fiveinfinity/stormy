@@ -5,7 +5,12 @@ angular
       .state('home', {
         url: '/',
         templateUrl: 'home.html',
-        controller: 'HomeController as home'
+        controller: 'HomeController as home',
+        resolve: {
+          week: function(TimeService) {
+            return TimeService.nextSevenDays();
+          }
+        }
       });
     $urlRouterProvider.otherwise('/');
     uiGmapGoogleMapApiProvider.configure({

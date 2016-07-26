@@ -36,7 +36,7 @@
   z-index: 1;
   top: 15px;
   left: 0;
-  margin: auto 20px;
+  margin: auto 25px;
   animation: fadein 3s;
     -moz-animation: fadein 3s; /* Firefox */
     -webkit-animation: fadein 3s; /* Safari and Chrome */

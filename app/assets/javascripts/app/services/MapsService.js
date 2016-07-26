@@ -22,16 +22,15 @@
 *   STORED IN THE weatherPoint OBJECT. CREATES NEW MARKERS ALONG ROUTE AND RENDERS MARKERS.
 */
 
-function MapsService() {
-  this.directionParams = function(origin, destination, maps) {
+function MapsService(TimeService) {
+  this.directionParams = function(origin, destination, maps, date, hour) {
     return {
       origin: origin,
       destination: destination,
       travelMode: maps.TravelMode.DRIVING,
       optimizeWaypoints: true,
       drivingOptions: {
-        //CREATE DATE INPUT FROM USER TO FILL THIS IN. MMDDYYYY NEEDED
-        departureTime: new Date('2016-07-29'),
+        departureTime: new Date(date+' '+hour+':00:00'),
         trafficModel: maps.TrafficModel.PESSIMISTIC
       }
     }
@@ -42,19 +41,21 @@ function MapsService() {
     routePoints = response['routes'][0]['overview_path'];
     // 'i' is the weatherPoint variable index, incremented by 1, 'j' is the index for each overview_path we're persisting.
     i = 0;
-
     for(j = 30; j < routePoints.length; j+=30) {
       lat = routePoints[j].lat();
       lng = routePoints[j].lng();
       weatherPoint[i] = [routePoints[j].lat(), routePoints[j].lng()];
       i++;
-
       //creating new markers for each overview_path we're saving on the directionsDisplay variable.
       new maps.Marker({
         position: {lat, lng},
         map: map
       });
     }
+  }
+
+  this.setWaypointTimes = function() {
+
   }
 }
 
