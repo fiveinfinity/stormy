@@ -1,9 +1,10 @@
-function TimeService() {
+  function TimeService() {
   // returns a hash with the weekday as the key, and the UTC date as the value.
   this.nextSevenDays = function() {
-    UTC = new Date(Date.now());
-    dayInt = UTC.getDay();
-    weekdays = {};
+    var UTC = new Date(Date.now());
+    var dayInt = UTC.getDay();
+    var weekdays = {};
+    var day = '';
 
     for(i = 0; i < 7; i++) {
       if(i === 0) {
@@ -13,12 +14,13 @@ function TimeService() {
       } else {
         day = getDay(dayInt);
       }
-      weekdays[dayInt] = [day, UTC];
+      weekdays[day] = UTC;
       UTC = new Date(UTC.getTime() + 86400000);
       dayInt == 6 ? dayInt = 0 : dayInt++;
     }
     return weekdays;
   }
+
   //given the day integer, returns the day of the week.
   var getDay = function(int) {
     switch (int) {
@@ -46,33 +48,6 @@ function TimeService() {
     return day;
   }
 
-  //given the day e.g. "Sunday", returns the day of the week as an int e.g. 0.
-  this.getDayInt = function(day) {
-    switch (day) {
-      case "Sunday":
-          int = 0;
-          break;
-      case "Monday":
-          int = 1;
-          break;
-      case "Tuesday":
-          int = 2;
-          break;
-      case "Wednesday":
-          int = 3;
-          break;
-      case "Thursday":
-          int = 4;
-          break;
-      case "Friday":
-          int = 5;
-          break;
-      case "Saturday":
-          int = 6;
-    }
-    return int;
-  }
-
   // takes the hour and period and returns military time.
   this.militaryTime = function(hour, period) {
     return period === "AM" ? parseInt(hour) : (parseInt(hour) + 12);
@@ -80,11 +55,44 @@ function TimeService() {
 
   //takes UTC and returns 'YYYY-MM-DD' string
   this.dateParser = function(UTCdate) {
-  day = UTCdate.getDate();
-  month = UTCdate.getMonth();
-  year = UTCdate.getFullYear();
+  var day = UTCdate.getDate();
+  var month = UTCdate.getMonth();
+  var year = UTCdate.getFullYear();
   day = day < 10 ? (0+day) : day;
   return year+'-'+month+'-'+day;
+  }
+
+  //takes an object with coords for each waypoint and adds the appropriate time value to each waypoint.
+  this.setWaypointTimes = function(response, markers, date, hour) {
+    //time in seconds
+    duration = response['routes'][0]['legs'][0]['duration']['value'];
+    //number of markers for route
+    markerCount = Object.keys(markers).length;
+    //time it takes to get inbetween each marker (assuming each marker is equidistant. Need something more dynamic)
+    markerTimeInterval = Math.floor(duration / markerCount);
+    timeInterval = markerTimeInterval;
+
+    adjustedTime = getWaypointUTCTime(timeInterval);
+    adjustedHour = adjustedTime[0] + hour;
+
+    for(var marker in markers) {
+      markers[marker].push(timeInterval);
+      // increment timeInterval for next waypoint.
+      timeInterval += markerTimeInterval;
+    }
+    return markers;
+  }
+
+  //params are YYYY-MM-DD and military time, and interval in seconds.
+  var getWaypointUTCTime = function(interval) {
+    hourIncrements = 0;
+    //interval in minutes, rounded down
+    intervalTime = Math.floor(interval / 60);
+    while(intervalTime > 60){
+      intervalTime -= 60;
+      hourIncrements++;
+    }
+    return [hourIncrements, intervalTime];
   }
 }
 

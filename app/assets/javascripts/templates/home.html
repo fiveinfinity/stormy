@@ -3,8 +3,8 @@
     <input type="text" name="origin" ng-model="home.origin" placeholder="origin" class="form-control" style="width: 90%; margin-left: 8px"/><br>
     <input type="text" name="destination" ng-model="home.destination" placeholder="destination" class="form-control" style="width: 90%; margin-left: 8px"/><br>
 
-    <div ng-repeat="day in home.week" class="btn-group">
-      <label class="btn btn-primary" ng-model="home.day" uib-btn-radio="'{{day[0]}}'">{{day[0]}}</label>
+    <div ng-repeat="(day, utc) in home.week" class="btn-group">
+      <label class="btn btn-primary" ng-model="home.day" uib-btn-radio="'{{day}}'">{{day}}</label>
     </div><br>
 
     <div ng-repeat="hour in home.hours" class="btn-group">
