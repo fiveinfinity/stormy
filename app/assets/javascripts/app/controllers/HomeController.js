@@ -1,46 +1,62 @@
 function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService, week, TimeService) {
-  var ctrl = this;
-  ctrl.week = week;
-  ctrl.hours = [1,2,3,4,5,6,7,8,9,10,11,12];
-  ctrl.timePeriod = ['AM', 'PM']
-  // Sets 'home' map to display the entire USA.
-  $scope.map = { center: { latitude: 37.09024, longitude: -95.712891 }, zoom: 4, control: {} };
+    var ctrl = this;
+    ctrl.week = week;
+    ctrl.hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    ctrl.timePeriod = ['AM', 'PM']
+        // Sets 'home' map to display the entire USA.
+    $scope.map = {
+        center: {
+            latitude: 37.09024,
+            longitude: -95.712891
+        },
+        zoom: 4,
+        control: {}
+    };
 
-  //Instantiates a new Google Maps object.
-  uiGmapGoogleMapApi.then(function(maps) {
-    ctrl.maps = maps;
-    ctrl.directionsDisplay = new ctrl.maps.DirectionsRenderer();
-    ctrl.directionsService = new ctrl.maps.DirectionsService();
-  });
-
-  //Instantiates the directions map upon form submission.
-  ctrl.directions = function() {
-    uiGmapIsReady.promise(1).then(function(instances) {
-      ctrl.map = instances[0].map;
-      ctrl.directionsDisplay.setMap(ctrl.map);
-      ctrl.createDirections(ctrl.directionsService, ctrl.maps);
+    //Instantiates a new Google Maps object.
+    uiGmapGoogleMapApi.then(function(maps) {
+        ctrl.maps = maps;
+        ctrl.directionsDisplay = new ctrl.maps.DirectionsRenderer();
+        ctrl.directionsService = new ctrl.maps.DirectionsService();
     });
-  }
 
-  //Calls Google Maps API and returns directions. ctrl.weatherPoint is the object that stores the markers.
-  ctrl.createDirections = function(directionsService, maps) {
-    var hour = TimeService.militaryTime(ctrl.hour, ctrl.period); //16
-    var UTCDate = ctrl.week[ctrl.day]; //UTC date
-    var date = TimeService.dateParser(UTCDate); //2016-7-10
+    //Instantiates the directions map upon form submission.
+    ctrl.directions = function() {
+        var currentMarkers = MapsService.getMarkers();
 
-    directionsService.route(MapsService.directionParams(ctrl.origin, ctrl.destination, maps, date, hour),
-    function(response, status) {
-      if (status == maps.DirectionsStatus.OK) {
-        ctrl.directionsDisplay.setDirections(response);
+        for (var i = 0; i < currentMarkers.length; i++) {
+          currentMarkers[i].setMap(null);
+        }
 
-        //a hash of all the markers for the route
-        markers = MapsService.createMarkers(response, maps, ctrl.map);
-        ctrl.weatherPoint = TimeService.setWaypointTimes(response, markers, date, hour);
-      }
-    });
-  }
+        MapsService.clearMarkers();
+        uiGmapIsReady.promise(1).then(function(instances) {
+            ctrl.map = instances[0].map;
+            ctrl.directionsDisplay.setMap(ctrl.map);
+            ctrl.createDirections(ctrl.directionsService, ctrl.maps);
+        });
+    }
+
+    //Calls Google Maps API and returns directions. ctrl.weatherPoint is the object that stores the markers.
+    ctrl.createDirections = function(directionsService, maps) {
+        var hour = TimeService.militaryTime(ctrl.hour, ctrl.period); //16
+        var UTCDate = ctrl.week[ctrl.day]; //UTC date
+        var date = TimeService.dateParser(UTCDate); //2016-7-10
+
+        directionsService.route(MapsService.directionParams(ctrl.origin, ctrl.destination, maps, date, hour),
+            function(response, status) {
+                if (status == maps.DirectionsStatus.OK) {
+                    ctrl.directionsDisplay.setDirections(response);
+
+                    //a hash of all the markers for the route
+                    var markers = MapsService.createMarkers(response, maps, ctrl.map);
+                    var waypointTimes = TimeService.setWaypointTimes(response, markers, date, hour);
+                    ctrl.markers = waypointTimes;
+                    console.log(ctrl.markers);
+                }
+            });
+    }
 }
 
 angular
-  .module('app')
-  .controller('HomeController', HomeController);
+    .module('app')
+    .controller('HomeController', HomeController);
