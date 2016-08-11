@@ -17,6 +17,10 @@ function WeatherService($http) {
         //     console.log(results);
         // });
     }
+
+    this.getWeather = function(city, state) {
+        return $http.get('https://crossorigin.me/http://api.wunderground.com/api/b924e5e377465063/hourly10day/q/'+state+'/'+city+'.json')
+    }
 }
 
 angular

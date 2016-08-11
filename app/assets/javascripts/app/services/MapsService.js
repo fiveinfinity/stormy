@@ -1,6 +1,6 @@
 function MapsService(TimeService, WeatherService) {
     var currentMarkers = [];
-    //creates the route object for Google Maps API.
+
     this.directionParams = function(origin, destination, maps, date, hour) {
         return {
             origin: origin,
@@ -15,9 +15,15 @@ function MapsService(TimeService, WeatherService) {
     }
 
     function newMarker(lat, lng, map, maps) {
+        var icon = {
+            url: '/assets/greenmarker.png',
+            scaledSize: new maps.Size(35, 45)
+        };
+
         var newMarker = new maps.Marker({
             position: { lat, lng },
-            map: map
+            map: map,
+            icon: icon
         });
         currentMarkers.push(newMarker);
         return newMarker;
@@ -34,11 +40,9 @@ function MapsService(TimeService, WeatherService) {
     //creates markers based on overview_path waypoints in the Google Maps Directions response.
     this.createMarkers = function(response, maps, map) {
         var markers = {};
-        //meters
         var distanceInMeters = response['routes'][0]['legs'][0]['distance']['value'];
         var distanceInMiles = toMiles(distanceInMeters);
         var routePoints = response['routes'][0]['overview_path'];
-        //set routePoint cadence
         var cadence = getCadence(distanceInMiles);
 
         var i = 0;
@@ -68,13 +72,14 @@ function MapsService(TimeService, WeatherService) {
     }
 
     function getCadence(miles) {
-        console.log(miles);
         if(miles < 100) {
             return 90;
         } else if(miles > 100 && miles < 500) {
             return 60;
-        } else {
+        } else if(miles > 500 && miles < 1500){
             return 30;
+        } else {
+            return 20;
         }
     }
 
