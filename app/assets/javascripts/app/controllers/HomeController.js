@@ -1,4 +1,4 @@
-function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService, week, TimeService) {
+function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService, week, TimeService, WeatherService) {
     var ctrl = this;
     ctrl.week = week;
     ctrl.hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -22,8 +22,8 @@ function HomeController($scope, uiGmapGoogleMapApi, uiGmapIsReady, MapsService, 
 
     //Instantiates the directions map upon form submission.
     ctrl.directions = function() {
+        //resets markers
         var currentMarkers = MapsService.getMarkers();
-
         for (var i = 0; i < currentMarkers.length; i++) {
           currentMarkers[i].setMap(null);
         }

@@ -14,17 +14,26 @@ function MapsService(TimeService, WeatherService) {
         }
     }
 
-    function newMarker(lat, lng, map, maps) {
+    function newMarker(lat, lng, map, maps, markers) {
         var icon = {
             url: '/assets/greenmarker.png',
             scaledSize: new maps.Size(35, 45)
         };
+
+        var weather = markers[0][5];
+
+        var infowindow = new maps.InfoWindow({
+          content: weather
+        });
 
         var newMarker = new maps.Marker({
             position: { lat, lng },
             map: map,
             icon: icon
         });
+        newMarker.addListener('click', function() {
+            infowindow.open(map, newMarker);
+        })
         currentMarkers.push(newMarker);
         return newMarker;
     }
@@ -51,9 +60,9 @@ function MapsService(TimeService, WeatherService) {
             var lng = routePoints[j].lng();
 
             // var geo = WeatherService.geoLookup(lat, lng, maps);
-            var marker = newMarker(lat, lng, map, maps);
-            //add 'geo' to the array below when app is ready.
-            markers[i] = [lat, lng, marker];
+            // var marker = newMarker(lat, lng, map, maps);
+            //add 'geo' and 'marker' to the array below when app is ready.
+            markers[i] = [lat, lng];
             i++;
         }
         //the next lines to the return are for testing to keep API calls to a min, use the commented line for app.
@@ -63,6 +72,11 @@ function MapsService(TimeService, WeatherService) {
             var state = data['data']['location']['state'];
             markers[0].push(city);
             markers[0].push(state);
+            var weather = WeatherService.getWeather(city, state);
+            weather.then(function(data) {
+                markers[0].push(data['data']['hourly_forecast'][0]['condition']);
+                var marker = newMarker(markers[0][0], markers[0][1], map, maps, markers)
+            });
         });
         return markers;
     }
